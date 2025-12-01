@@ -13,7 +13,7 @@ void AssortBoard(vector<vector<Cell>>& board, int mineCount, int width, int heig
 void loadBoardFromFile(const string& filename, vector<vector<Cell>>& board, float tileSize, int& mineCount, int& totalSafeCells);
 
 int main() {
-    // opening the config file, will have to modify later possibly with the test games
+
     ifstream config("boards/config.cfg");
     int width, height, mineCount;
 
@@ -193,7 +193,7 @@ int main() {
                     }
                 }
 
-                // very similar functionality as smiley for the debug button FIX SAME PROBLEM AS FLAGS!!! ALSO ITS SAYING DEBUG CLICKED EVERYWHERE???
+            
 
 
 
@@ -235,11 +235,7 @@ int main() {
                 sf::FloatRect happyFaceBounds = happyFaceSprite.getGlobalBounds();
 
                 if (happyFaceBounds.contains(mousePos)) {
-                    // I was going to make separate if statements for each state of the smiley but I think since winning/losing just overlays it I can just have one
-
-                    // reset board and defaults
-                    // I had an issue where assorting the board would not change mines back to unrevealed, since the assort function
-                    // doesn't expect there to be mines prior to assorting. This for loop just ensures all the cells don't have mines before assorting them
+                
                     for (int x = 0; x < width; x++) {
                         for (int y = 0; y < height; y++) {
                             board[y][x].setSurroundingMines(0);
@@ -249,7 +245,7 @@ int main() {
 
 
                     Cell::revealedCells = 0;
-                    // NEED FIX!!!!!!!!!!!!!! CLICKING THE BUTTON DOES NOT RESET THE DRAW NUMBER COUNT ????
+    
                     ifstream config("boards/config.cfg");
                     if (config.is_open()) {
                         config >> width >> height >> mineCount;
@@ -267,9 +263,7 @@ int main() {
             }
 
 
-            // add the test buttons here (outside the if game)
 
-            // bug here, mine count is correct but the win condition becomes a loss?
 
             if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
                 sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
@@ -422,7 +416,6 @@ void loadBoardFromFile(const string& filename, vector<vector<Cell>>& board, floa
         return;
     }
 
-    // professor fox told me in OH that the test boards will just assume 25x16
     const int rows = 16;
     const int cols = 25;
 
@@ -443,7 +436,7 @@ void loadBoardFromFile(const string& filename, vector<vector<Cell>>& board, floa
             Cell& cell = board[row][col];
             cell = Cell(x, y, tileSize);
 
-            // set state based on the 1s and 0s
+
             if (line[col] == '1') {
                 CellState state;
                 state.unrevealed = true;
@@ -464,7 +457,7 @@ void loadBoardFromFile(const string& filename, vector<vector<Cell>>& board, floa
 
     file.close();
 
-    // after loading the board, calculate surrounding mines for each cell
+
     for (int r = 0; r < rows; ++r) {
         for (int c = 0; c < cols; ++c) {
             int surroundingMines = 0;
@@ -483,3 +476,4 @@ void loadBoardFromFile(const string& filename, vector<vector<Cell>>& board, floa
         }
     }
 }
+
