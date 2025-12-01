@@ -15,12 +15,9 @@ Cell::Cell(float x, float y, float tileSize)
 
 
 void Cell::draw(sf::RenderWindow& window) {
-    // note: Elizabeth asked on slack why the flags were dark, and thomas said we need to draw the flags/mines on TOP of the revealed/unrevealed tiles. My code was doing the same thing, so this is updated
     if (state.revealed) {
         sprite.setTexture(*revealedTexture);
         window.draw(sprite);
-
-        // draw additional textures on top of the revealed texture
         if (state.mine) {
             sprite.setTexture(*mineTexture);
             window.draw(sprite);
@@ -35,7 +32,6 @@ void Cell::draw(sf::RenderWindow& window) {
             sprite.setTexture(*hiddenTexture);
             window.draw(sprite);
 
-            // put flag ON TOP of it (thanks elizabeth)
             sprite.setTexture(*flagTexture);
             window.draw(sprite);
         }
@@ -46,7 +42,7 @@ void Cell::draw(sf::RenderWindow& window) {
     }
 }
 
- // when the player clicks, run reveal. Hovering will set state, but only clicking will reveal
+
 void Cell::reveal() {
     if (state.unrevealed && !state.flag) {
         state.unrevealed = false;
@@ -56,7 +52,6 @@ void Cell::reveal() {
             sprite.setTexture(*mineTexture);
         }
         else if (surroundingMines > 0) {
-            // this is happening
             sprite.setTexture(*numberTextures[surroundingMines - 1]);
             revealedCells++;
         }
@@ -86,16 +81,13 @@ void Cell::revealNeighbors(vector<vector<Cell>>& board, int x, int y, int width,
     }
 }
 
-// MAKE SURE FLAGS CAN NOT BE PLACED ON REVEALED TILES!!!
 void Cell::placeFlag() {
     if (state.unrevealed) {
         state.flag = true;
-        // tile can still be "unrevealed" with a flag 
         sprite.setTexture(*flagTexture);
     }
 }
 
-// need to fix later
 void Cell::removeFlag() {
     if (state.flag) {
         sprite.setTexture(*hiddenTexture);
@@ -130,7 +122,7 @@ void Cell::loadTextures() {
         cout << "something other than the numbers failed to load" << endl;
     }
 
-    // this is just a shorter way of loading them shown to me, so I don't have several lines of the same code just loading in number1, number2, number 3 etx
+
     for (int i = 0; i < 8; ++i) {
         numberTextures[i] = new sf::Texture();
         if (!numberTextures[i]->loadFromFile("images/number_" + to_string(i + 1) + ".png")) {
@@ -147,10 +139,8 @@ void drawNumber(sf::RenderWindow& window, sf::Texture& digitsTexture, int number
     
     std::string numberStr = std::to_string(std::abs(number));
 
-    // ensure 3 digits (I did this before reading on slack that it doesn't matter -_-
     numberStr = std::string(3 - numberStr.length(), '0') + numberStr;
 
-    // - is 11th option
     if (number < 0) {
         numberStr = "-" + numberStr;
     }
@@ -190,3 +180,4 @@ int Cell::revealedCells = 0;
 int Cell::getSurroundingMines() const {
     return surroundingMines;
 }
+
