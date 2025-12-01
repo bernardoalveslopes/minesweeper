@@ -6,7 +6,7 @@
 using namespace std;
 
 struct CellState { 
-    // we want a bunch of bools that will track what state each cell is in (this also helps so we can have MULTIPLE cell states at the same time (ie revealed and number)
+
     bool unrevealed = true;
     bool revealed = false;
     bool mine = false;
@@ -24,14 +24,14 @@ private:
     static sf::Texture* mineTexture;
 
     CellState state; // will track the state of the cell 
-    int surroundingMines; // how many mines are adjacent to this cell?
+    int surroundingMines;
     
 
 public:
     // Constructor
     Cell(float x, float y, float tileSize);
 
-    static int revealedCells; // static because this will be true of all cells
+    static int revealedCells; 
 
     void draw(sf::RenderWindow& window);
 
@@ -58,10 +58,10 @@ public:
     bool isMine() const;
 };
 
-// globals i should fix later oops
 sf::Texture* Cell::hiddenTexture = nullptr;
 sf::Texture* Cell::revealedTexture = nullptr;
 sf::Texture* Cell::flagTexture = nullptr;
 sf::Texture* Cell::numberTextures[8] = { nullptr };
 sf::Texture* Cell::mineTexture = nullptr;
+
 
